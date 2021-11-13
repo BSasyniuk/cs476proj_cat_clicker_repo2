@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Chat {% endblock title %}
+{% block content %}
+    {% if latest_chat_list %}
+        <ul>
+        {% for comment in latest_chat_list %}
+            <li>{{comment.user}}:  {{ comment.content }} ---- {{comment.publish_datetime}}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recent messages.</p>
+    {% endif %}
+    {%if user.is_authenticated and user.profile.ban_status is False %}
+        <form action="{% url 'chat' %}" method="post">
+            {% csrf_token %}
+            {{comment_form}}
+            <button>Submit</button>
+    {% else %}
+        <h2>Logged in as (% user.username %). You are currently banned from the chat and are unable to comment. </h2>
+    {% endif %}
+
+        <a href="{% url 'index' %}">Back to home</a>
+{% endblock content %}

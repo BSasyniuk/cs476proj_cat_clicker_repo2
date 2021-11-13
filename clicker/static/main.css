@@ -1,0 +1,168 @@
+body { 
+    display: grid;
+    grid-template-areas: 
+        "header header header"
+        "leaderboard game bonus"
+        "leaderboard game powerup"
+        "chat game powerup"
+        "chat game account"
+        "footer footer footer";
+    grid-template-rows: 80px 1fr 1fr 1fr 1fr 40px;  
+    grid-template-columns: 20% 1fr 20%;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    height: 100vh;
+    margin: 0;
+}  
+header, footer, article, nav, div {
+    padding: 1.2em;
+    background: rgb(110, 137, 226);
+}
+title{ 
+    font-family: "Comic Sans";
+    background: orange;
+}
+#pageHeader {
+    grid-area: header;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 20%;
+    font-size: xx-large;
+}
+#pageFooter {
+    grid-area: footer;
+}
+#welcome {
+    vertical-align: middle;
+    text-align: left;
+    font-size: x-large;
+    line-height: 0%; /*workaround to get text vertical centered, but there's probably a better way*/
+}
+
+/* just testing how I can edit the look of buttons and form submit buttons */
+button, input {
+    font-family:monospace;
+}
+
+#gameArea { 
+    grid-area: game;      
+}
+#leaderboard { 
+    grid-area: leaderboard; 
+}
+#bonuses { 
+    grid-area: bonus; 
+} 
+#chat { 
+    grid-area: chat; 
+}
+#powerups { 
+    grid-area: powerup; 
+} 
+#accountButtons { 
+    grid-area: account; 
+} 
+/* Stack the layout on small devices/viewports. */
+@media all and (max-width: 575px) {
+    body { 
+        grid-template-areas: 
+        "header"
+        "game"
+        "bonus"
+        "powerup"
+        "account"
+        "leaderboard"
+        "chat"
+        "footer";
+        grid-template-rows: 80px 1fr 70px 1fr 70px;  
+        grid-template-columns: 1fr;
+    }
+}
+
+.scoreContainer {
+    background-color: rgba(198, 198, 241, 0.233);
+    width: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.clickerContainer img {
+    position: relative;
+    transition: all 0.1s ease-in-out
+}
+
+.clickerContainer img:hover {
+    transform: scale(1.10);
+}
+
+.clickerContainer img:active {
+    transform: scale(0.99);
+}
+
+.shopButton {
+    background-color: rgba(198, 198, 241, 0.233);
+    transition: all 0.1s ease-in-out;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.shopButton:hover {
+    background-color: #c7c7c7;
+    transition: all 0.1s ease-in-out;
+}
+
+.shopButton #image {
+    width: 25%;
+}
+
+.shopButton img {
+    height: 48px;
+    width: 48px;
+    border-radius: 2px;
+    margin-left: 2px;
+    margin-top: 1px;
+}
+
+.shopButton #nameAndCost p {
+    margin: 0px;
+    width: 60%;
+}
+
+.shopButton #nameAndCost p:first-of-type {
+    font-size: 20px;
+}
+
+.shopButton #amount {
+    font-size: 36px;
+    color: #595959;
+    font-family: roboto;
+    width: 15%;
+}
+
+.sectionFooter {
+    margin-top: 20%;
+}
+
+.unselectable {
+    user-select: none;
+    /* these three are browser specific because generic may not work on all browsers*/
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#upgradeContainer img {
+    height: 64px;
+    width: 64px;
+    margin-right: 5px;
+    border-radius: 3px;
+}
+
+#achievementContainer img {
+    height: 64px;
+    width: 64px;
+}

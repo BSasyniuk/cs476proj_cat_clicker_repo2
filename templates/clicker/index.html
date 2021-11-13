@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title>{% block title %}Cat Clicker{% endblock %}</title>
+  </head>
+
+  <body>
+  {% block content %}
+  {{ loaded_game|json_script:"loaded_game"}}
+  <script>
+    // images and other static variables MUST be defined in template before they can be used in JS due to how Django works
+    var static_tag = "{% load static %}";
+    let powerup_images = ["{% static 'images/treat.jfif' %}", "{% static 'images/catnip.jpg' %}", "{% static 'images/tuna.jpg' %}"];
+    let upgrade_images = ["{% static 'images/catcrown.jpg' %}", "{% static 'images/catcrown2.jpg' %}", "{% static 'images/catcrown3.png' %}"];
+  </script>
+    {% if user.is_authenticated %}
+      <header id="pageHeader">Cat Clicker! <section id="welcome">Welcome back, {{ user.username }}!</section></header>
+
+      <article id="gameArea">
+          <center>
+              <div class="scoreContainer unselectable">
+                  <span id="score" name="scoreField">0</span> clicks<br />
+                  <span id="scorepersecond"> 0</span> clicks per second
+              </div>
+              <br />
+              <div class="clickerContainer unselectable">
+                  {% load static %}
+                  <img src="{% static display_badge %}" id="clicker" height="256px" width="256px" >
+              </div>
+              <br /><p id = "pIdTest"></p>
+          </center>
+      </article>
+
+      <nav id="leaderboard">
+        <h2>Leaderboard</h2>
+        {% if top_scores %}
+          <ul>
+          {% for score in top_scores %}
+            <li>{{score.user}} ---- {{ score.season_clicks }} clicks</li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          <p>There are no high scores yet!</p>
+        {% endif %}
+      </nav>
+
+      <nav id="chat">
+        Chat <br />
+        {% if latest_chat_list %}
+          <ul>
+          {% for comment in latest_chat_list %}
+              <li>{{comment.user}}:  {{ comment.content }} ---- {{comment.publish_datetime}}</li>
+          {% endfor %}
+          </ul>
+        {% else %}
+            <p>No recent messages.</p>
+        {% endif %}
+        <br />
+        <a href="{% url 'chat' %}">View Full Chat</a>
+      </nav>
+      
+      <div id="bonuses">
+          Bonuses/Upgrades
+          <div id="upgradeContainer"></div>
+      </div>
+      
+      <div id="powerups">
+          Powerups/Shop
+          <div id="shopContainer"></div>
+      </div>
+      
+      <div id="accountButtons">
+          Save + Account Info <br /><br />
+          <form name="saveForm" method="post" action="{% url 'index' %}">
+            {% csrf_token %}
+            <input type="hidden" name="gameSaveField" id="gameSaveId" value="0">
+            <input type="submit" name="submit" value="Save Game" onclick="saveGame();">
+          </form>
+          <br />
+          <a href="{% url 'logout' %}">Log Out</a>
+      </div>
+
+      <footer id="pageFooter">
+          Kitten Klicker
+      </footer>
+      {% load static %}
+      <script src="{% static 'main.js' %}"></script>
+    {% else %}
+      <h1>Welcome to Cat Clicker!</h1>
+      <p>You are not logged in!</p>
+      <a href="{% url 'login' %}">Click here to log in!</a>|
+      <a href="{% url 'signup' %}">Sign Up</a>
+    {% endif %}
+  {% endblock %}
+  </body>
+</HTML>

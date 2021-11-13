@@ -1,0 +1,9 @@
+from django.apps import AppConfig
+
+
+class ClickerConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'clicker'
+
+    def ready(self):
+        import clicker.signals
