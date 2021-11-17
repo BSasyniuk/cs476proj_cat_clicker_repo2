@@ -76,7 +76,7 @@ def chat(request):
     total_time = timeit.default_timer() - start_time
     print("Time to Retrieve the Comment list: ", total_time)
 
-    latest_chat_list = reversed(latest_chat_list)
+    # latest_chat_list = reversed(latest_chat_list)
     if request.method == 'POST':
         comment_form = CommentForm(request.POST, instance=request.user)
         
