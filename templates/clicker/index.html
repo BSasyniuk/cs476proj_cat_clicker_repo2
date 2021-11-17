@@ -87,10 +87,7 @@
       {% load static %}
       <script src="{% static 'main.js' %}"></script>
     {% else %}
-      <h1>Welcome to Cat Clicker!</h1>
-      <p>You are not logged in!</p>
-      <a href="{% url 'login' %}">Click here to log in!</a>|
-      <a href="{% url 'signup' %}">Sign Up</a>
+      <meta http-equiv="refresh" content="0; URL={% url 'login' %}" />
     {% endif %}
   {% endblock %}
   </body>
