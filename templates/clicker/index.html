@@ -57,7 +57,9 @@
           {% endfor %}
           </ul>
         {% else %}
-            <p>No recent messages.</p>
+          <ul>
+              <li><b>No recent messages!</b></li>
+          </ul>
         {% endif %}
         <a class="prettyButton" id="chatButton" href="{% url 'chat' %}">Go To Chat</a>
       </nav>
