@@ -1,13 +1,32 @@
-{% extends 'base.html' %}
+{% extends 'basereg.html' %}
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title>{% block title %}Login{% endblock %}</title>
+  </head>
+  <body>
+  {% block content %}
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu:500' rel='stylesheet' type='text/css'>
+    <div class="login">
+      <div class="login-header">
+        <h5>Welcome to Cat Clicker!</h5>
+        <br />
+        <h6>Login</h6>
+      </div>
+      <div class="login-form">
+        <form method="post" id="django-form">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <br>
+          <input type="submit" class="login-button" value="Login"/>
+        </form>
+        <br>
+        <a class="sign-up" href="{% url 'signup' %}">Sign Up!</a>
+      </div>
+    </div>
+    {% load static %}
+    <img src="{% static 'images/stage3.png' %}" id="catIconLogin" height="256px" width="256px" >
+  {% endblock %}
+  </body>
+</HTML>
 
-{% block title %}Login{% endblock %}
-
-{% block content %}
-<h1>Welcome to Cat Clicker! <h1>
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
-{% endblock %}

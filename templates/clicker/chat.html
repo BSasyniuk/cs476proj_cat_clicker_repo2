@@ -1,23 +1,53 @@
-{% extends 'base.html' %}
-{% block title %} Chat {% endblock title %}
-{% block content %}
-    {% if latest_chat_list %}
-        <ul>
-        {% for comment in latest_chat_list %}
-            <li>{{comment.user}}:  {{ comment.content }} ---- {{comment.publish_datetime}}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No recent messages.</p>
-    {% endif %}
-    {%if user.is_authenticated and user.profile.ban_status is False %}
-        <form action="{% url 'chat' %}" method="post">
-            {% csrf_token %}
-            {{comment_form}}
-            <button>Submit</button>
-    {% else %}
-        <h2>Logged in as (% user.username %). You are currently banned from the chat and are unable to comment. </h2>
-    {% endif %}
-
-        <a href="{% url 'index' %}">Back to home</a>
-{% endblock content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Chat</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'chat.css' %}">
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900|Orbitron:900' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <h1>Cat Clicker Chat</h1>
+        <div id="flipMsgs">
+        <article id="centerChat">
+        {% if latest_chat_list %}
+            {% for comment in latest_chat_list %}
+                {% if user.username == comment.user.username %}
+                    <div class="bubble-speech bubble-right">
+                        <h4 class="author">{{comment.user}}</h4>
+                        <div class="message">{{ comment.content }}</div>
+                        <span class="time_date"> {{comment.publish_datetime|date:"M j P"}}</span>
+                    </div>        
+                {% else %}
+                    <div class="bubble-speech bubble-left">
+                        <h4 class="author">{{comment.user}}</h4>
+                        <div class="message">{{ comment.content }}</div>
+                        <span class="time_date"> {{comment.publish_datetime|date:"M j P"}}</span>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="bubble-speech bubble-center">
+                <h4 class="author">Cat Clicker</h4>
+                <div class="message">No Recent Messages</div>
+            </div>
+        {% endif %}
+        </article>
+        </div>
+        <div id="commentBox">
+            {%if user.is_authenticated and user.profile.ban_status is False %}
+            <p class="loggedInAs">Welcome back, {{ user.username }}! Enter your message here.</p>
+                <form action="{% url 'chat' %}" method="post">
+                    {% csrf_token %}
+                    {{comment_form}}
+                    <input type="submit" value="Send" /></form>
+            {% else %}
+                <h2 class="loggedInAs">Logged in as {{ user.username }}. <br />You are currently banned from the chat and are unable to comment. </h2>
+            {% endif %}
+            <br /><a class="prettyButton" href="{% url 'index' %}">Back to the game</a>
+        </div>
+        {% load static %}
+        <img src="{% static 'images/stage3.png' %}" id="catIcon" height="256px" width="256px" >
+    </body>
+</html>

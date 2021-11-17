@@ -1,13 +1,31 @@
-{% extends 'base.html' %}
-
-{% block title %}Sign Up{% endblock %}
-
-{% block content %}
-  <h1>Welcome to Cat Clicker!</h1>
-  <h2>Sign up here to play:</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign Up</button>
-  </form>
-{% endblock %}
+{% extends 'basereg.html' %}
+<!DOCTYPE HTML>
+<HTML>
+  <head>
+    <title>{% block title %}Sign Up{% endblock %}</title>
+  </head>
+  <body>
+  {% block content %}
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu:500' rel='stylesheet' type='text/css'>
+    <div class="login">
+      <div class="login-header">
+        <h5>Welcome to Cat Clicker!</h5>
+        <br />
+        <h6>Sign up to start playing</h6>
+      </div>
+      <div class="login-form">
+        <form method="post" id="django-form">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <br>
+          <input type="submit" class="login-button" value="Sign Up"/>
+        </form>
+        <br>
+        <a class="sign-up" href="{% url 'login' %}">Login</a>
+      </div>
+    </div>
+    {% load static %}
+    <img src="{% static 'images/stage3.png' %}" id="catIconSignup" height="256px" width="256px" >
+  {% endblock %}
+  </body>
+</HTML>

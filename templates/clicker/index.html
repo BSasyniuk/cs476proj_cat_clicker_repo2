@@ -15,7 +15,10 @@
     let upgrade_images = ["{% static 'images/catcrown.jpg' %}", "{% static 'images/catcrown2.jpg' %}", "{% static 'images/catcrown3.png' %}"];
   </script>
     {% if user.is_authenticated %}
-      <header id="pageHeader">Cat Clicker! <section id="welcome">Welcome back, {{ user.username }}!</section></header>
+      <header id="pageHeader">
+        <span id="headerTitle">Cat Clicker</span>
+        <section id="welcome">Welcome back, {{ user.username }}!</section>
+      </header>
 
       <article id="gameArea">
           <center>
@@ -28,61 +31,76 @@
                   {% load static %}
                   <img src="{% static display_badge %}" id="clicker" height="256px" width="256px" >
               </div>
-              <br /><p id = "pIdTest"></p>
           </center>
       </article>
 
       <nav id="leaderboard">
-        <h2>Leaderboard</h2>
+        <span class="sectionTitles">Leaderboard</span>
         {% if top_scores %}
-          <ul>
-          {% for score in top_scores %}
-            <li>{{score.user}} ---- {{ score.season_clicks }} clicks</li>
-          {% endfor %}
-          </ul>
+          <table id="leaderboardTable">
+            <tr><th>Username</th><th>Score</th></tr>
+            {% for score in top_scores %}
+            <tr><td class="scoreUser">{{score.user}}</td><td class="scoreClicks">{{ score.season_clicks }}</td></tr>
+            {% endfor %}
+          </table>
         {% else %}
           <p>There are no high scores yet!</p>
         {% endif %}
       </nav>
 
       <nav id="chat">
-        Chat <br />
+        <span class="sectionTitles">Latest Msgs</span>
         {% if latest_chat_list %}
           <ul>
           {% for comment in latest_chat_list %}
-              <li>{{comment.user}}:  {{ comment.content }} ---- {{comment.publish_datetime}}</li>
+              <li><b>{{comment.user}} @ {{comment.publish_datetime|date:"g:iA"|lower}}:</b>  {{ comment.content }}</li>
           {% endfor %}
           </ul>
         {% else %}
             <p>No recent messages.</p>
         {% endif %}
-        <br />
-        <a href="{% url 'chat' %}">View Full Chat</a>
+        <a class="prettyButton" id="chatButton" href="{% url 'chat' %}">Go To Chat</a>
       </nav>
       
       <div id="bonuses">
-          Bonuses/Upgrades
-          <div id="upgradeContainer"></div>
+          <span class="sectionTitles">Upgrades</span>
+          <div id="upgradeContainer">
+            <table id="upgradeTable">
+            <tr>
+              <td id="upg1"><img src="{% static 'images/question.png' %}" title="Purchase 1 Treat to&#10; unlock this upgrade" ></td>
+              <td id="upg2"><img src="{% static 'images/question.png' %}" title="Click 50x to unlock &#10; this upgrade" ></td>
+              <td id="upg3"><img src="{% static 'images/question.png' %}" title="Purchase 3 Catnip  &#10;to unlock this upgrade" ></td>
+            </tr>  
+            </table>
+          </div>
       </div>
       
       <div id="powerups">
-          Powerups/Shop
+          <span class="sectionTitles">Powerups</span>
           <div id="shopContainer"></div>
       </div>
       
       <div id="accountButtons">
-          Save + Account Info <br /><br />
+        <center>
+        <table id="saveTable">
+          <tr>
+          <td>
           <form name="saveForm" method="post" action="{% url 'index' %}">
             {% csrf_token %}
             <input type="hidden" name="gameSaveField" id="gameSaveId" value="0">
-            <input type="submit" name="submit" value="Save Game" onclick="saveGame();">
+            <input type="submit" class="prettyButton" name="submit" value="Save Game" onclick="saveGame();">
           </form>
-          <br />
-          <a href="{% url 'logout' %}">Log Out</a>
+          </td>
+          <td>
+          <a class="prettyButton" href="{% url 'logout' %}">Log Out</a>
+          </td>
+        </tr>
+        </table>
+        </center>
       </div>
 
       <footer id="pageFooter">
-          Kitten Klicker
+          <span>Cat Clicker 2021</span>
       </footer>
       {% load static %}
       <script src="{% static 'main.js' %}"></script>
