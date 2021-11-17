@@ -3,24 +3,23 @@ body {
     grid-template-areas: 
         "header header header"
         "leaderboard game bonus"
+        "leaderboard game bonus"
         "leaderboard game powerup"
+        "chat game powerup"
         "chat game powerup"
         "chat game account"
         "footer footer footer";
-    grid-template-rows: 80px 1fr 1fr 1fr 1fr 40px;  
+    grid-template-rows: 80px 1fr 1fr 1fr 1fr 1fr 1fr 40px;  
     grid-template-columns: 20% 1fr 20%;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
     height: 100vh;
     margin: 0;
+    font-family: 'Source Sans Pro', sans-serif;
 }  
 header, footer, article, nav, div {
     padding: 1.2em;
     background: rgb(110, 137, 226);
-}
-title{ 
-    font-family: "Comic Sans";
-    background: orange;
 }
 #pageHeader {
     grid-area: header;
@@ -31,17 +30,28 @@ title{
 }
 #pageFooter {
     grid-area: footer;
+    text-align: center;
 }
+
 #welcome {
     vertical-align: middle;
     text-align: left;
-    font-size: x-large;
-    line-height: 0%; /*workaround to get text vertical centered, but there's probably a better way*/
+    font-size: 20px;
+    line-height: 0%;
 }
 
-/* just testing how I can edit the look of buttons and form submit buttons */
-button, input {
-    font-family:monospace;
+#headerTitle {
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 8px;
+    font-size: 52px;
+}
+
+.sectionTitles {
+    color: #fff;
+    letter-spacing: 2px;
+    font-size: 20px;
+    margin-left: 20px;
 }
 
 #gameArea { 
@@ -49,6 +59,7 @@ button, input {
 }
 #leaderboard { 
     grid-area: leaderboard; 
+    position: relative;
 }
 #bonuses { 
     grid-area: bonus; 
@@ -61,7 +72,9 @@ button, input {
 } 
 #accountButtons { 
     grid-area: account; 
+    position: relative;
 } 
+
 /* Stack the layout on small devices/viewports. */
 @media all and (max-width: 575px) {
     body { 
@@ -85,13 +98,14 @@ button, input {
     padding: 10px;
     border-radius: 10px;
     font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
     font-weight: bold;
 }
 
 .clickerContainer img {
     position: relative;
-    transition: all 0.1s ease-in-out
+    transition: all 0.1s ease-in-out;
+    margin-top: 5%;
 }
 
 .clickerContainer img:hover {
@@ -139,8 +153,67 @@ button, input {
 .shopButton #amount {
     font-size: 36px;
     color: #595959;
-    font-family: roboto;
+    /* font-family: roboto; */
     width: 15%;
+}
+
+.prettyButton {
+    background:#fff;
+    border:1px solid #f2f2f2;
+    border-radius:5px;
+    padding: 3px 4px 3px 4px;
+    text-transform:uppercase;
+    font-family: 'Source Sans Pro', sans-serif;
+    cursor:pointer;
+    text-decoration: none;
+    font-size: 16px;
+    height: 28px;
+    font-weight: bold;
+    color: #000;
+}
+
+#saveTable {
+    border-collapse: separate;
+    border-spacing: 30px 0px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    table-layout: fixed;
+    width: 80%;
+}
+
+#leaderboardTable {
+    border-collapse: separate;
+    border-spacing: 30px 6px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    table-layout: fixed;
+    font-size: large;
+    text-align: center;
+}
+
+#leaderboardTable th {
+    padding-top: 20px;
+}
+
+#chat ul {
+    list-style-type: none;
+    margin-left: -25px;
+}
+
+#chat li {
+    padding-top: 5px;
+}
+
+#chatButton {
+    margin-left: 30%;
 }
 
 .sectionFooter {

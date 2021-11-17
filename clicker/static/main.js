@@ -34,20 +34,20 @@ var powerup = {
     // income = # clicks/second earned per powerup
     income: [
         1,
-        10,
-        20
+        2,
+        5
     ],
     //original cost
     base_cost: [
         15,
         30,
-        50
+        60
     ],
     // actual cost will increase with each powerup purchased
     cost: [
         15,
         30,
-        50
+        60
     ],
 
     purchase: function(index) {
@@ -55,7 +55,7 @@ var powerup = {
             game.score -= this.cost[index];
             this.count[index]++;
             // cost increases by this much with each one purchased
-            this.cost[index] = Math.ceil(this.base_cost[index] + this.count[index] * 5.5); // maybe make the 5.0 into a global var COST_FACTOR ?
+            this.cost[index] = Math.ceil(this.base_cost[index] + this.count[index] * 20.0);
             display.updateScore();
             display.updateShop();
             display.updateUpgrades();
@@ -65,34 +65,34 @@ var powerup = {
 
 var upgrade = {
     name: [
-        "Stone Fingers",
-        "Iron Fingers",
-        "Stone Clicker"
+        "Tasty Treats",
+        "Mouse Master",
+        "Catnip Crazy"
     ],
     description: [
         "Treats are twice as efficient",
-        "Treats are twice as efficient",
-        "The mouse is twice as efficient"
+        "The mouse is twice as efficient",
+        "Catnip is twice as efficient"
     ],
     type: [
         "powerup",
-        "powerup",
-        "click"
+        "click",
+        "powerup"
     ],
     cost: [
         300,
         500,
-        300
+        1000
     ],
     powerupIndex: [
         0, // treat powerup is at index 0
-        0,
-        -1 // does not impact a powerup
+        -1,
+        1 // does not impact a powerup
     ],
     requirement: [
         1, // you need to have purchased 1 treat before you can buy this upgrade
-        5,
-        1
+        50, // click cat badge 50 manually times before you can buy this upgrade
+        3 // purchase 3 catnips before you can buy this upgrade
     ],
     bonus: [
         2, // it doubles the income
@@ -134,18 +134,37 @@ var display = {
     updateShop: function() {
         document.getElementById("shopContainer").innerHTML = "";
         for (i = 0; i < powerup.name.length; i++) {
-            document.getElementById("shopContainer").innerHTML += '<table class="shopButton unselectable" onclick="powerup.purchase('+i+')"><tr><td id="image"><img src="'+powerup_images[i]+'"></td><td id="nameAndCost"><p>'+powerup.name[i]+'</p><p><span>'+powerup.cost[i]+'</span> clicks</p></td><td id="amount"><span>'+powerup.count[i]+'</span></td></tr></table>'
+            document.getElementById("shopContainer").innerHTML += '<table class="shopButton unselectable" onclick="powerup.purchase('+i+')" title="Autoclicks '+powerup.income[i]+'x per second"><tr><td id="image"><img src="'+powerup_images[i]+'"></td><td id="nameAndCost"><p>'+powerup.name[i]+'</p><p><span>'+powerup.cost[i]+'</span> clicks</p></td><td id="amount"><span>'+powerup.count[i]+'</span></td></tr></table>'
         }
     },
 
     updateUpgrades: function() {
-        document.getElementById("upgradeContainer").innerHTML = "";
+        // document.getElementById("upgradeContainer").innerHTML = "";
         for (i = 0; i < upgrade.name.length; i++) {
             if (!upgrade.purchased[i]) {
                 if (upgrade.type[i] == "powerup" && powerup.count[upgrade.powerupIndex[i]] >= upgrade.requirement[i]) {
-                    document.getElementById("upgradeContainer").innerHTML += ' <img src="'+upgrade_images[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' clicks)" onclick="upgrade.purchase('+i+')">';
+                    if (i == 0) {
+                        document.getElementById("upg1").innerHTML = "";
+                        document.getElementById("upg1").innerHTML = ' <img src="'+upgrade_images[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' clicks)" onclick="upgrade.purchase('+i+')">';
+                    }
+                    if (i == 2) {
+                        document.getElementById("upg3").innerHTML = "";
+                        document.getElementById("upg3").innerHTML = ' <img src="'+upgrade_images[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' clicks)" onclick="upgrade.purchase('+i+')">';
+                    }
                 } else if (upgrade.type[i] == "click" && game.totalClicks >= upgrade.requirement[i]) {
-                    document.getElementById("upgradeContainer").innerHTML += '<img src="'+upgrade_images[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' clicks)" onclick="upgrade.purchase('+i+')">';
+                    document.getElementById("upg2").innerHTML = "";
+                    document.getElementById("upg2").innerHTML = '<img src="'+upgrade_images[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' clicks)" onclick="upgrade.purchase('+i+')">';
+                }
+            }
+            else if (upgrade.purchased[i]) {
+                if (i == 0) {
+                    document.getElementById("upg1").innerHTML = "";
+                }
+                if (i == 1) {
+                    document.getElementById("upg2").innerHTML = "";
+                }
+                if (i == 2) {
+                    document.getElementById("upg3").innerHTML = "";
                 }
             }
         }
@@ -179,7 +198,7 @@ function loadGame() {
             }
         }
         for (i = 0; i < savedGame.powerupCount.length; i++) {
-            powerup.cost[i] = Math.ceil(powerup.base_cost[i] + savedGame.powerupCount[i] * 5.5);
+            powerup.cost[i] = Math.ceil(powerup.base_cost[i] + savedGame.powerupCount[i] * 20.0);
         }
         if (typeof savedGame.upgradePurchased !== "undefined") {
             for (i = 0; i < savedGame.upgradePurchased.length; i++) {
@@ -213,11 +232,11 @@ setInterval (function() {
     display.updateScore();
 }, 1000) // 1000ms = 1 second
 
-// updates score and upgrades every 10 seconds
+// updates score and upgrades every 5 seconds
 setInterval (function() {
     display.updateScore();
     display.updateUpgrades();
-}, 10000) // 10000ms = 10 seconds
+}, 5000) // 10000ms = 10 seconds
 
 // suppresses 'Confirm Form Resubmission' alert when refreshing the page after saving
 if ( window.history.replaceState ) {
